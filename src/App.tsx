@@ -21,18 +21,18 @@ export default function App() {
     const formElements = form.elements as typeof form.elements & {
       removeTotal: HTMLInputElement
     }
-    removeTotalNumber(values, setValues, Number(formElements.removeTotal.value))
+    if (typeof formElements.removeTotal.value === 'number') {
+      removeTotalNumber(values, setValues, Number(formElements.removeTotal.value))
+    }
   }
+
   return (
-    <div className="px-2 py-2">
-      <h1 className="text-3xl font-semibold mb-4">Dominos Take Home Test</h1>
-      <div className="py-6 bg-slate-100 my-2">
-        [{values.map((item) => `[${item[0]},${item[1]}]`)}]
-      </div>
-      <div className="flex gap-4 flex-wrap">
+    <>
+      <h1 className="text-3xl font-semibold mb-4 text-center py-4">Dominoes Take Home Test</h1>
+      <div className="flex gap-4 flex-wrap sm:w-[50%] mx-auto justify-center">
         {values.map((item, idx) => {
           return (
-            <div key={idx} className="w-20 h-40 bg-white border shadow-xl border-black rounded-md">
+            <div key={idx} className={`${item[0] === item[1] ? 'bg-red-300' : 'bg-white'} w-20 h-40 border shadow-xl border-black rounded-md`}>
               <div className="h-[50%] grid grid-cols-3 grid-rows-3 p-1">
                 <DotDominoes value={item[0]} />
               </div>
@@ -44,37 +44,39 @@ export default function App() {
           )
         })}
       </div>
-      <div className="mb-4">
-        <h1 className="text-xl font-semibold mb-2">Double Number</h1>
-        <span>{doubleNumbers(values)}</span>
+      <div className="my-4 w-fit mx-auto text-center border-4 border-slate-200">
+        <h1 className="text-xl font-semibold bg-slate-200 py-2 px-6">Double Number</h1>
+        <span className="font-semibold">{doubleNumbers(values)}</span>
       </div>
-      <div className="mb-4">
-        <h1 className="text-xl font-semibold mb-2">Sorting</h1>
-        <span className="flex gap-4">
-          <button onClick={() => sortAsc(values, setValues)} className="py-1 px-4 border-2 border-black rounded-md font-semibold">sort(ASC)</button>
-          <button onClick={() => sortDesc(values, setValues)} className="py-1 px-4 border-2 border-black rounded-md font-semibold">sort(DESC)</button>
-          <button onClick={() => location.reload()} className="py-1 px-4 border-2 border-black rounded-md font-semibold">reset</button>
-          <button onClick={() => flipValue(values, setValues)} className="py-1 px-4 border-2 border-black rounded-md font-semibold">flip</button>
-          <button onClick={() => removeDup(values, setValues)} className="py-1 px-4 border-2 border-black rounded-md font-semibold">remove duplicate</button>
-        </span>
-      </div>
-      <div className="mb-4">
-        <h1 className="text-xl font-semibold mb-2">Remove Total Number</h1>
-        <span className="flex gap-4">
-          <form onSubmit={handleSubmit} >
+      <div className="flex border shadow-xl mb-6 flex-col xl:flex-row">
+        <div className="bg-slate-100 xl:w-[50%] px-6 py-4 xl:py-2 text-center xl:text-left">
+          <h1 className="text-2xl font-semibold mb-2">Source</h1>
+          <div>
+            [{values.map((item) => `[${item[0]},${item[1]}]`)}]
+          </div>
+        </div>
+        <div className="xl:w-[50%] p-2">
+          <div className="mb-4 flex gap-2 justify-center flex-wrap">
+            <button onClick={() => sortAsc(values, setValues)} className="py-2 px-6 border shadow-md">sort(ASC)</button>
+            <button onClick={() => sortDesc(values, setValues)} className="py-2 px-6 border shadow-md">sort(DESC)</button>
+            <button onClick={() => location.reload()} className="py-2 px-6 border shadow-md">reset</button>
+            <button onClick={() => flipValue(values, setValues)} className="py-2 px-6 border shadow-md">flip</button>
+            <button onClick={() => removeDup(values, setValues)} className="py-2 px-6 border shadow-md">remove duplicate</button>
+          </div>
+          <form onSubmit={handleSubmit} className="p-2 w-fit mx-auto xl:mx-0">
             <input
               name="removeTotal"
               id="removeTotal"
               type="number"
               min={0}
-              className="appearance-none outline-none border-b py-2 mb-2"
+              className="outline-none border p-2 mb-2"
               value={removeTotal}
               onChange={(e) => setRemoveTotal(e.target.value)}
             />
-            <button type="submit" className="block py-1 px-4 border-2 border-black rounded-md font-semibold">SUBMIT</button>
+            <button type="submit" className="bg-blue-600 px-6 py-2 font-semibold text-white">SUBMIT</button>
           </form>
-        </span>
+        </div>
       </div>
-    </div>
+    </>
   )
 }
