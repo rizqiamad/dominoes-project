@@ -21,9 +21,7 @@ export default function App() {
     const formElements = form.elements as typeof form.elements & {
       removeTotal: HTMLInputElement
     }
-    if (typeof formElements.removeTotal.value === 'number') {
-      removeTotalNumber(values, setValues, Number(formElements.removeTotal.value))
-    }
+    removeTotalNumber(values, setValues, Number(formElements.removeTotal.value))
   }
 
   return (
